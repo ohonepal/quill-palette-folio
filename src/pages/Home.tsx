@@ -25,7 +25,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl"
           >
-            Dedicated Crypto Trader | Mindful & Efficient
+            AHA Nepal Founder | Mindful & Efficient
           </motion.p>
 
           <motion.p
