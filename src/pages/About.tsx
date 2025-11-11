@@ -16,7 +16,7 @@ const About = () => {
           
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-lg text-muted-foreground mb-6">
-              I'm Khum Bahadur Katuwal — a dedicated crypto trader and lifelong learner. I'm passionate about 
+              I'm Khum Bahadur Katuwal — a dedicated founder of AHA Nepal and lifelong learner. I'm passionate about 
               discipline, mindfulness, and growth. Mornings are my sanctuary — where I meditate, plan, and strive 
               for efficiency. This space reflects my journey through markets, habits, and reflections.
             </p>
@@ -51,18 +51,6 @@ const About = () => {
                 </p>
               </div>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-12"
-            >
-              <Button size="lg" className="group">
-                <Download className="mr-2 h-4 w-4" />
-                Download Resume
-              </Button>
-            </motion.div>
           </div>
         </motion.div>
       </section>
