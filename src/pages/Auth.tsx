@@ -8,12 +8,10 @@ import { useToast } from '@/hooks/use-toast';
 
 const Auth = () => {
   const navigate = useNavigate();
-  const { login, signup, isAuthenticated } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const { toast } = useToast();
-  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    username: '',
     password: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -28,20 +26,12 @@ const Auth = () => {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!isLogin && !formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email address';
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
     }
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -53,38 +43,19 @@ const Auth = () => {
 
     if (!validateForm()) return;
 
-    let success = false;
-
-    if (isLogin) {
-      success = await login(formData.email, formData.password);
-      if (success) {
-        toast({
-          title: 'Welcome back!',
-          description: 'You have successfully logged in.',
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: 'Login failed',
-          description: 'Invalid email or password.',
-          variant: 'destructive',
-        });
-      }
+    const success = await login(formData.username, formData.password);
+    if (success) {
+      toast({
+        title: 'Welcome back, Khum!',
+        description: 'You have successfully logged in.',
+      });
+      navigate('/dashboard');
     } else {
-      success = await signup(formData.name, formData.email, formData.password);
-      if (success) {
-        toast({
-          title: 'Account created!',
-          description: 'Welcome! Your account has been created successfully.',
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: 'Signup failed',
-          description: 'Email already exists. Please try logging in.',
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: 'Login failed',
+        description: 'Invalid username or password.',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -98,12 +69,6 @@ const Auth = () => {
     }
   };
 
-  const toggleMode = () => {
-    setIsLogin(!isLogin);
-    setErrors({});
-    setFormData({ name: '', email: '', password: '' });
-  };
-
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4">
       <motion.div
@@ -114,39 +79,23 @@ const Auth = () => {
       >
         <div className="bg-card border border-border rounded-lg p-8">
           <h1 className="text-3xl font-bold mb-2 text-center">
-            {isLogin ? 'Welcome Back' : 'Create Account'}
+            Admin Login
           </h1>
           <p className="text-muted-foreground text-center mb-8">
-            {isLogin ? 'Login to manage your blog posts' : 'Sign up to get started'}
+            Enter your credentials to access the dashboard
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
-              <div>
-                <Input
-                  name="name"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={errors.name ? 'border-destructive' : ''}
-                />
-                {errors.name && (
-                  <p className="text-destructive text-sm mt-1">{errors.name}</p>
-                )}
-              </div>
-            )}
-
             <div>
               <Input
-                name="email"
-                type="email"
-                placeholder="Email"
-                value={formData.email}
+                name="username"
+                placeholder="Username"
+                value={formData.username}
                 onChange={handleChange}
-                className={errors.email ? 'border-destructive' : ''}
+                className={errors.username ? 'border-destructive' : ''}
               />
-              {errors.email && (
-                <p className="text-destructive text-sm mt-1">{errors.email}</p>
+              {errors.username && (
+                <p className="text-destructive text-sm mt-1">{errors.username}</p>
               )}
             </div>
 
@@ -165,20 +114,9 @@ const Auth = () => {
             </div>
 
             <Button type="submit" className="w-full" size="lg">
-              {isLogin ? 'Login' : 'Sign Up'}
+              Login
             </Button>
           </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={toggleMode}
-              className="text-sm text-primary hover:underline"
-            >
-              {isLogin
-                ? "Don't have an account? Sign up"
-                : 'Already have an account? Login'}
-            </button>
-          </div>
         </div>
       </motion.div>
     </div>

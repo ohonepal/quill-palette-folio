@@ -24,18 +24,18 @@ const BlogContext = createContext<BlogContextType | undefined>(undefined);
 const samplePosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Getting Started with React',
-    excerpt: 'Learn the basics of React and build your first component.',
-    content: '<h2>Introduction</h2><p>React is a powerful library for building user interfaces. In this post, we\'ll explore the fundamentals...</p>',
-    author: 'Your Name',
+    title: 'Morning Routines: The Foundation of Success',
+    excerpt: 'How starting your day with intention can transform your trading and life.',
+    content: '<h2>The Power of Morning</h2><p>Mornings set the tone for everything that follows. As a crypto trader, I\'ve learned that a disciplined morning routine is non-negotiable...</p>',
+    author: 'Khum Bahadur Katuwal',
     date: new Date().toISOString(),
   },
   {
     id: '2',
-    title: 'Mastering TailwindCSS',
-    excerpt: 'Discover how to create beautiful designs with utility-first CSS.',
-    content: '<h2>Why TailwindCSS?</h2><p>TailwindCSS is a utility-first CSS framework that makes styling effortless...</p>',
-    author: 'Your Name',
+    title: 'Meditation and Market Analysis',
+    excerpt: 'Finding clarity in chaos through mindfulness practice.',
+    content: '<h2>The Connection</h2><p>Meditation has taught me to observe without reacting—a skill that\'s invaluable in volatile crypto markets...</p>',
+    author: 'Khum Bahadur Katuwal',
     date: new Date(Date.now() - 86400000).toISOString(),
   },
 ];

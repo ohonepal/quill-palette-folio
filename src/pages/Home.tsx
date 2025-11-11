@@ -15,7 +15,7 @@ const Home = () => {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-[hsl(var(--hero-gradient-from))] to-[hsl(var(--hero-gradient-to))] bg-clip-text text-transparent">
-              Hi, I'm Your Name
+              Hi, I'm Khum Bahadur Katuwal
             </h1>
           </motion.div>
 
@@ -25,7 +25,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl"
           >
-            Full Stack Developer & Creative Problem Solver
+            Dedicated Crypto Trader | Mindful & Efficient
           </motion.p>
 
           <motion.p
@@ -34,8 +34,8 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-base md:text-lg text-muted-foreground mb-12 max-w-3xl"
           >
-            I craft beautiful, performant web applications that solve real problems. 
-            Passionate about clean code, modern design, and creating delightful user experiences.
+            A journey through markets, mindfulness, and meaningful growth. 
+            I believe in discipline, focus, and the power of intentional living.
           </motion.p>
 
           <motion.div
@@ -44,15 +44,15 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-wrap gap-4 justify-center"
           >
-            <Link to="/projects">
+            <Link to="/about">
               <Button size="lg" className="group">
-                View My Work
+                About Me
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link to="/thoughts">
               <Button size="lg" variant="outline">
-                Get In Touch
+                My Thoughts
               </Button>
             </Link>
           </motion.div>
@@ -73,9 +73,9 @@ const Home = () => {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Code className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Clean Code</h3>
+              <h3 className="text-xl font-semibold mb-3">Discipline</h3>
               <p className="text-muted-foreground">
-                Writing maintainable, scalable code following best practices and modern standards.
+                Consistent habits and routines that drive success in trading and life.
               </p>
             </motion.div>
 
@@ -89,9 +89,9 @@ const Home = () => {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Palette className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Modern Design</h3>
+              <h3 className="text-xl font-semibold mb-3">Mindfulness</h3>
               <p className="text-muted-foreground">
-                Creating beautiful, intuitive interfaces with attention to detail and user experience.
+                Daily meditation and reflection to maintain clarity and focus.
               </p>
             </motion.div>
 
@@ -105,9 +105,9 @@ const Home = () => {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Zap className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Performance</h3>
+              <h3 className="text-xl font-semibold mb-3">Efficiency</h3>
               <p className="text-muted-foreground">
-                Optimizing applications for speed, efficiency, and the best possible user experience.
+                Optimizing every aspect of life for maximum productivity and growth.
               </p>
             </motion.div>
           </div>

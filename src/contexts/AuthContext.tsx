@@ -8,8 +8,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  signup: (name: string, email: string, password: string) => Promise<boolean>;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -27,45 +26,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    // Dummy authentication - in production, this would call an API
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const foundUser = storedUsers.find(
-      (u: any) => u.email === email && u.password === password
-    );
-
-    if (foundUser) {
-      const user = { id: foundUser.id, email: foundUser.email, name: foundUser.name };
-      setUser(user);
-      localStorage.setItem('user', JSON.stringify(user));
+  const login = async (username: string, password: string): Promise<boolean> => {
+    // Admin-only authentication - hardcoded credentials
+    // In production, this would call a secure API
+    if (username === 'khum' && password === 'admin123') {
+      const adminUser = {
+        id: '1',
+        email: 'khum@example.com',
+        name: 'Khum Bahadur Katuwal',
+      };
+      setUser(adminUser);
+      localStorage.setItem('user', JSON.stringify(adminUser));
       return true;
     }
     return false;
-  };
-
-  const signup = async (name: string, email: string, password: string): Promise<boolean> => {
-    // Dummy signup - in production, this would call an API
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    
-    // Check if user already exists
-    if (storedUsers.find((u: any) => u.email === email)) {
-      return false;
-    }
-
-    const newUser = {
-      id: Date.now().toString(),
-      name,
-      email,
-      password, // In production, never store plain passwords!
-    };
-
-    storedUsers.push(newUser);
-    localStorage.setItem('users', JSON.stringify(storedUsers));
-
-    const user = { id: newUser.id, email: newUser.email, name: newUser.name };
-    setUser(user);
-    localStorage.setItem('user', JSON.stringify(user));
-    return true;
   };
 
   const logout = () => {
@@ -78,7 +52,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         user,
         login,
-        signup,
         logout,
         isAuthenticated: !!user,
       }}

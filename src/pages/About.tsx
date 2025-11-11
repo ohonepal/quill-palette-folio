@@ -16,55 +16,41 @@ const About = () => {
           
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-lg text-muted-foreground mb-6">
-              I'm a passionate full-stack developer with a love for creating elegant solutions to complex problems.
-              With expertise in modern web technologies, I focus on building applications that are not only functional
-              but also beautiful and user-friendly.
+              I'm Khum Bahadur Katuwal — a dedicated crypto trader and lifelong learner. I'm passionate about 
+              discipline, mindfulness, and growth. Mornings are my sanctuary — where I meditate, plan, and strive 
+              for efficiency. This space reflects my journey through markets, habits, and reflections.
             </p>
 
-            <h2 className="text-2xl font-semibold mt-12 mb-4">My Values</h2>
+            <h2 className="text-2xl font-semibold mt-12 mb-4">My Principles</h2>
             <div className="grid md:grid-cols-2 gap-6 mb-12">
               <div className="bg-card p-6 rounded-lg border border-border">
-                <h3 className="text-xl font-semibold mb-2">Continuous Learning</h3>
+                <h3 className="text-xl font-semibold mb-2">Discipline</h3>
                 <p className="text-muted-foreground">
-                  Technology evolves rapidly, and I'm committed to staying current with the latest tools,
-                  frameworks, and best practices.
+                  Success in trading and life comes from consistent habits and unwavering commitment to excellence.
                 </p>
               </div>
               
               <div className="bg-card p-6 rounded-lg border border-border">
-                <h3 className="text-xl font-semibold mb-2">Quality First</h3>
+                <h3 className="text-xl font-semibold mb-2">Focus</h3>
                 <p className="text-muted-foreground">
-                  I believe in writing clean, maintainable code and creating products that users love to use.
+                  Eliminating distractions and maintaining clarity on what truly matters in each moment.
                 </p>
               </div>
               
               <div className="bg-card p-6 rounded-lg border border-border">
-                <h3 className="text-xl font-semibold mb-2">Collaboration</h3>
+                <h3 className="text-xl font-semibold mb-2">Efficiency</h3>
                 <p className="text-muted-foreground">
-                  Great things are built by great teams. I thrive in collaborative environments where ideas flow freely.
+                  Optimizing every system and process to maximize results with minimal wasted effort.
                 </p>
               </div>
               
               <div className="bg-card p-6 rounded-lg border border-border">
-                <h3 className="text-xl font-semibold mb-2">User-Centric</h3>
+                <h3 className="text-xl font-semibold mb-2">Growth Mindset</h3>
                 <p className="text-muted-foreground">
-                  Every decision I make is guided by the question: "How does this benefit the end user?"
+                  Every challenge is an opportunity to learn, improve, and become better than yesterday.
                 </p>
               </div>
             </div>
-
-            <h2 className="text-2xl font-semibold mt-12 mb-4">My Goals</h2>
-            <p className="text-lg text-muted-foreground mb-6">
-              My goal is to continue pushing the boundaries of what's possible on the web, creating innovative
-              solutions that make a real impact. I'm particularly interested in:
-            </p>
-            <ul className="list-disc list-inside text-muted-foreground mb-8 space-y-2">
-              <li>Building scalable and maintainable applications</li>
-              <li>Exploring new technologies and frameworks</li>
-              <li>Contributing to open-source projects</li>
-              <li>Mentoring aspiring developers</li>
-              <li>Creating products that improve people's lives</li>
-            </ul>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

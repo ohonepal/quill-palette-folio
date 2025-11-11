@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -90,33 +90,35 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-medium mb-1">Email</h3>
-                    <a href="mailto:your.email@example.com" className="text-muted-foreground hover:text-primary transition-colors">
-                      your.email@example.com
+                    <a href="mailto:khum@example.com" className="text-muted-foreground hover:text-primary transition-colors">
+                      khum@example.com
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="h-5 w-5 text-primary" />
+                    <Linkedin className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium mb-1">Phone</h3>
-                    <a href="tel:+1234567890" className="text-muted-foreground hover:text-primary transition-colors">
-                      +1 (234) 567-890
+                    <h3 className="font-medium mb-1">LinkedIn</h3>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      Connect with me
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-primary" />
+                    <svg className="h-5 w-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium mb-1">Location</h3>
-                    <p className="text-muted-foreground">
-                      Your City, Your Country
-                    </p>
+                    <h3 className="font-medium mb-1">X / Twitter</h3>
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      Follow me
+                    </a>
                   </div>
                 </div>
               </div>

@@ -15,9 +15,9 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
-    { name: 'Skills', path: '/skills' },
-    { name: 'Projects', path: '/projects' },
+    { name: 'Thoughts', path: '/thoughts' },
     { name: 'Blog', path: '/blog' },
+    { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -32,7 +32,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold text-primary">
-            Portfolio
+            KBK
           </Link>
 
           {/* Desktop Navigation */}
