@@ -26,7 +26,7 @@ const About = () => {
               <div className="bg-card p-6 rounded-lg border border-border">
                 <h3 className="text-xl font-semibold mb-2">Discipline</h3>
                 <p className="text-muted-foreground">
-                  Success in trading and life comes from consistent habits and unwavering commitment to excellence.
+                  Success in life comes from consistent habits and unwavering commitment to excellence.
                 </p>
               </div>
               
