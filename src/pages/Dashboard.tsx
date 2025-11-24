@@ -27,24 +27,36 @@ const Dashboard = () => {
   
   const [isGalleryUploaderOpen, setIsGalleryUploaderOpen] = useState(false);
 
-  const handleDeletePost = (id: string, title: string) => {
+  const handleDeletePost = async (id: string, title: string) => {
     if (window.confirm(`Delete "${title}"?`)) {
-      deletePost(id);
-      toast({ title: 'Post deleted', description: 'Blog post removed successfully.' });
+      try {
+        await deletePost(id);
+        toast({ title: 'Post deleted', description: 'Blog post removed successfully.' });
+      } catch (error) {
+        toast({ title: 'Error', description: 'Failed to delete post.', variant: 'destructive' });
+      }
     }
   };
 
-  const handleDeleteThought = (id: string) => {
+  const handleDeleteThought = async (id: string) => {
     if (window.confirm('Delete this thought?')) {
-      deleteThought(id);
-      toast({ title: 'Thought deleted', description: 'Thought removed successfully.' });
+      try {
+        await deleteThought(id);
+        toast({ title: 'Thought deleted', description: 'Thought removed successfully.' });
+      } catch (error) {
+        toast({ title: 'Error', description: 'Failed to delete thought.', variant: 'destructive' });
+      }
     }
   };
 
-  const handleDeleteImage = (id: string) => {
+  const handleDeleteImage = async (id: string) => {
     if (window.confirm('Delete this image?')) {
-      deleteImage(id);
-      toast({ title: 'Image deleted', description: 'Image removed from gallery.' });
+      try {
+        await deleteImage(id);
+        toast({ title: 'Image deleted', description: 'Image removed from gallery.' });
+      } catch (error) {
+        toast({ title: 'Error', description: 'Failed to delete image.', variant: 'destructive' });
+      }
     }
   };
 

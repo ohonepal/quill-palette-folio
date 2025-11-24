@@ -16,9 +16,10 @@ const About = () => {
           
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-lg text-muted-foreground mb-6">
-              I'm Khum Bahadur Katuwal — a dedicated founder of AHA Nepal and lifelong learner. I'm passionate about 
-              discipline, mindfulness, and growth. Mornings are my sanctuary — where I meditate, plan, and strive 
-              for efficiency. This space reflects my journey through markets, habits, and reflections.
+              I'm Khum Bahadur Katuwal — a lifelong learner passionate about discipline, 
+              mindfulness, and personal growth. Mornings are my sanctuary — where I meditate, 
+              plan, and strive for efficiency. This space reflects my journey through learning, 
+              habits, and self-reflection.
             </p>
 
             <h2 className="text-2xl font-semibold mt-12 mb-4">My Principles</h2>
@@ -26,7 +27,7 @@ const About = () => {
               <div className="bg-card p-6 rounded-lg border border-border">
                 <h3 className="text-xl font-semibold mb-2">Discipline</h3>
                 <p className="text-muted-foreground">
-                  Success in trading and life comes from consistent habits and unwavering commitment to excellence.
+                  Success comes from consistent habits and unwavering commitment to excellence in all areas of life.
                 </p>
               </div>
               

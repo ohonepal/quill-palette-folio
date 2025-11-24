@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useThoughts } from '@/contexts/ThoughtsContext';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { X } from 'lucide-react';
@@ -11,27 +12,55 @@ interface ThoughtEditorProps {
 
 const ThoughtEditor = ({ thoughtId, onClose }: ThoughtEditorProps) => {
   const { addThought, updateThought, getThought } = useThoughts();
-  const [content, setContent] = useState('');
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ content: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (thoughtId) {
       const thought = getThought(thoughtId);
       if (thought) {
-        setContent(thought.content);
+        setFormData({ content: thought.content });
       }
     }
   }, [thoughtId, getThought]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!content.trim()) return;
-
-    if (thoughtId) {
-      updateThought(thoughtId, content);
-    } else {
-      addThought(content);
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.content.trim()) {
+      newErrors.content = 'Content is required';
     }
-    onClose();
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+      if (thoughtId) {
+        await updateThought(thoughtId, formData);
+        toast({
+          title: 'Thought updated',
+          description: 'Your thought has been successfully updated.',
+        });
+      } else {
+        await addThought(formData);
+        toast({
+          title: 'Thought added',
+          description: 'Your thought has been successfully added.',
+        });
+      }
+      onClose();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to save thought. Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -47,13 +76,22 @@ const ThoughtEditor = ({ thoughtId, onClose }: ThoughtEditorProps) => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Share your thoughts..."
-            rows={8}
-            className="resize-none"
-          />
+          <div>
+            <Textarea
+              value={formData.content}
+              onChange={(e) => {
+                setFormData({ content: e.target.value });
+                if (errors.content) setErrors({ ...errors, content: '' });
+              }}
+              placeholder="Share your thoughts..."
+              rows={8}
+              className={`resize-none ${errors.content ? 'border-destructive' : ''}`}
+            />
+            {errors.content && (
+              <p className="text-destructive text-sm mt-1">{errors.content}</p>
+            )}
+          </div>
+          
           <div className="flex gap-2">
             <Button type="submit" className="flex-1">
               {thoughtId ? 'Update' : 'Publish'}

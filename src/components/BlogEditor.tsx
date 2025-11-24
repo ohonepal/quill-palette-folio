@@ -68,29 +68,36 @@ const BlogEditor = ({ postId, onClose }: BlogEditorProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    if (postId) {
-      updatePost(postId, formData);
+    try {
+      if (postId) {
+        await updatePost(postId, formData);
+        toast({
+          title: 'Post updated',
+          description: 'Your blog post has been successfully updated.',
+        });
+      } else {
+        await addPost({
+          ...formData,
+          author: user?.name || 'Anonymous',
+        });
+        toast({
+          title: 'Post created',
+          description: 'Your blog post has been successfully created.',
+        });
+      }
+      onClose();
+    } catch (error) {
       toast({
-        title: 'Post updated',
-        description: 'Your blog post has been successfully updated.',
-      });
-    } else {
-      addPost({
-        ...formData,
-        author: user?.name || 'Anonymous',
-      });
-      toast({
-        title: 'Post created',
-        description: 'Your blog post has been successfully created.',
+        title: 'Error',
+        description: 'Failed to save post. Please try again.',
+        variant: 'destructive',
       });
     }
-
-    onClose();
   };
 
   return (

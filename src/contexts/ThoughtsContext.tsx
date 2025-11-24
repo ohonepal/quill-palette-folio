@@ -1,61 +1,70 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { thoughtsService, Thought } from '@/api/services/thoughtsService';
 
-export interface Thought {
-  id: string;
-  content: string;
-  date: string;
-}
+export type { Thought };
 
 interface ThoughtsContextType {
   thoughts: Thought[];
-  addThought: (content: string) => void;
-  updateThought: (id: string, content: string) => void;
-  deleteThought: (id: string) => void;
+  addThought: (thought: Omit<Thought, 'id' | 'date'>) => Promise<void>;
+  updateThought: (id: string, thought: Partial<Thought>) => Promise<void>;
+  deleteThought: (id: string) => Promise<void>;
   getThought: (id: string) => Thought | undefined;
+  isLoading: boolean;
+  refreshThoughts: () => Promise<void>;
 }
 
 const ThoughtsContext = createContext<ThoughtsContextType | undefined>(undefined);
 
-const sampleThoughts: Thought[] = [
-  {
-    id: '1',
-    content: 'Discipline is choosing between what you want now and what you want most.',
-    date: new Date().toISOString(),
-  },
-  {
-    id: '2',
-    content: 'The market rewards patience and punishes impulsiveness.',
-    date: new Date(Date.now() - 86400000).toISOString(),
-  },
-];
-
 export const ThoughtsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [thoughts, setThoughts] = useState<Thought[]>(() => {
-    const stored = localStorage.getItem('thoughts');
-    return stored ? JSON.parse(stored) : sampleThoughts;
-  });
+  const [thoughts, setThoughts] = useState<Thought[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const refreshThoughts = async () => {
+    try {
+      setIsLoading(true);
+      const fetchedThoughts = await thoughtsService.getAllThoughts();
+      setThoughts(fetchedThoughts);
+    } catch (error) {
+      console.error('Failed to fetch thoughts:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem('thoughts', JSON.stringify(thoughts));
-  }, [thoughts]);
+    refreshThoughts();
+  }, []);
 
-  const addThought = (content: string) => {
-    const newThought: Thought = {
-      id: Date.now().toString(),
-      content,
-      date: new Date().toISOString(),
-    };
-    setThoughts(prev => [newThought, ...prev]);
+  const addThought = async (thought: Omit<Thought, 'id' | 'date'>) => {
+    try {
+      const newThought = await thoughtsService.createThought(thought);
+      setThoughts(prev => [newThought, ...prev]);
+    } catch (error) {
+      console.error('Failed to create thought:', error);
+      throw error;
+    }
   };
 
-  const updateThought = (id: string, content: string) => {
-    setThoughts(prev =>
-      prev.map(thought => (thought.id === id ? { ...thought, content } : thought))
-    );
+  const updateThought = async (id: string, updatedThought: Partial<Thought>) => {
+    try {
+      const updated = await thoughtsService.updateThought(id, updatedThought);
+      setThoughts(prev =>
+        prev.map(thought => (thought.id === id ? updated : thought))
+      );
+    } catch (error) {
+      console.error('Failed to update thought:', error);
+      throw error;
+    }
   };
 
-  const deleteThought = (id: string) => {
-    setThoughts(prev => prev.filter(thought => thought.id !== id));
+  const deleteThought = async (id: string) => {
+    try {
+      await thoughtsService.deleteThought(id);
+      setThoughts(prev => prev.filter(thought => thought.id !== id));
+    } catch (error) {
+      console.error('Failed to delete thought:', error);
+      throw error;
+    }
   };
 
   const getThought = (id: string) => {
@@ -63,7 +72,7 @@ export const ThoughtsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <ThoughtsContext.Provider value={{ thoughts, addThought, updateThought, deleteThought, getThought }}>
+    <ThoughtsContext.Provider value={{ thoughts, addThought, updateThought, deleteThought, getThought, isLoading, refreshThoughts }}>
       {children}
     </ThoughtsContext.Provider>
   );

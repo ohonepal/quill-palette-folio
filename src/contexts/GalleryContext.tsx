@@ -1,46 +1,60 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { galleryService, GalleryImage } from '@/api/services/galleryService';
 
-export interface GalleryImage {
-  id: string;
-  url: string;
-  publicId: string;
-  uploadedAt: string;
-}
+export type { GalleryImage };
 
 interface GalleryContextType {
   images: GalleryImage[];
-  addImage: (url: string, publicId: string) => void;
-  deleteImage: (id: string) => void;
+  uploadImage: (file: File, title?: string, description?: string) => Promise<void>;
+  deleteImage: (id: string) => Promise<void>;
+  isLoading: boolean;
+  refreshImages: () => Promise<void>;
 }
 
 const GalleryContext = createContext<GalleryContextType | undefined>(undefined);
 
 export const GalleryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [images, setImages] = useState<GalleryImage[]>(() => {
-    const stored = localStorage.getItem('galleryImages');
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    localStorage.setItem('galleryImages', JSON.stringify(images));
-  }, [images]);
-
-  const addImage = (url: string, publicId: string) => {
-    const newImage: GalleryImage = {
-      id: Date.now().toString(),
-      url,
-      publicId,
-      uploadedAt: new Date().toISOString(),
-    };
-    setImages(prev => [newImage, ...prev]);
+  const refreshImages = async () => {
+    try {
+      setIsLoading(true);
+      const fetchedImages = await galleryService.getAllImages();
+      setImages(fetchedImages);
+    } catch (error) {
+      console.error('Failed to fetch images:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const deleteImage = (id: string) => {
-    setImages(prev => prev.filter(image => image.id !== id));
+  useEffect(() => {
+    refreshImages();
+  }, []);
+
+  const uploadImage = async (file: File, title?: string, description?: string) => {
+    try {
+      const newImage = await galleryService.uploadImage({ file, title, description });
+      setImages(prev => [newImage, ...prev]);
+    } catch (error) {
+      console.error('Failed to upload image:', error);
+      throw error;
+    }
+  };
+
+  const deleteImage = async (id: string) => {
+    try {
+      await galleryService.deleteImage(id);
+      setImages(prev => prev.filter(image => image.id !== id));
+    } catch (error) {
+      console.error('Failed to delete image:', error);
+      throw error;
+    }
   };
 
   return (
-    <GalleryContext.Provider value={{ images, addImage, deleteImage }}>
+    <GalleryContext.Provider value={{ images, uploadImage, deleteImage, isLoading, refreshImages }}>
       {children}
     </GalleryContext.Provider>
   );

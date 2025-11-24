@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useGallery } from '@/contexts/GalleryContext';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Upload, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -9,16 +10,21 @@ interface GalleryUploaderProps {
 }
 
 const GalleryUploader = ({ onClose }: GalleryUploaderProps) => {
-  const { addImage } = useGallery();
+  const { uploadImage } = useGallery();
   const { toast } = useToast();
-  const [uploading, setUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Create preview
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
@@ -27,22 +33,42 @@ const GalleryUploader = ({ onClose }: GalleryUploaderProps) => {
     }
   };
 
-  const handleUpload = async () => {
-    if (!preview) return;
-
-    setUploading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     
-    // Simulate upload - In production, upload to Cloudinary here
-    // For now, we'll use the preview as the URL
-    setTimeout(() => {
-      addImage(preview, `img-${Date.now()}`);
+    if (!selectedFile) {
+      toast({
+        title: 'No file selected',
+        description: 'Please select an image to upload.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      await uploadImage(
+        selectedFile,
+        formData.title || undefined,
+        formData.description || undefined
+      );
+
       toast({
         title: 'Image uploaded',
         description: 'Your image has been added to the gallery.',
       });
-      setUploading(false);
+
       onClose();
-    }, 1000);
+    } catch (error) {
+      toast({
+        title: 'Upload failed',
+        description: 'Failed to upload image. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -55,7 +81,7 @@ const GalleryUploader = ({ onClose }: GalleryUploaderProps) => {
           </Button>
         </div>
 
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             ref={fileInputRef}
             type="file"
@@ -71,18 +97,33 @@ const GalleryUploader = ({ onClose }: GalleryUploaderProps) => {
                 alt="Preview"
                 className="w-full h-64 object-cover rounded-lg"
               />
+              
+              <Input
+                placeholder="Title (optional)"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              />
+              
+              <Input
+                placeholder="Description (optional)"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              />
+              
               <div className="flex gap-2">
                 <Button
-                  onClick={handleUpload}
-                  disabled={uploading}
+                  type="submit"
+                  disabled={isUploading}
                   className="flex-1"
                 >
-                  {uploading ? 'Uploading...' : 'Upload to Gallery'}
+                  {isUploading ? 'Uploading...' : 'Upload to Gallery'}
                 </Button>
                 <Button
+                  type="button"
                   variant="outline"
                   onClick={() => {
                     setPreview(null);
+                    setSelectedFile(null);
                     if (fileInputRef.current) fileInputRef.current.value = '';
                   }}
                 >
@@ -92,6 +133,7 @@ const GalleryUploader = ({ onClose }: GalleryUploaderProps) => {
             </div>
           ) : (
             <button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
               className="w-full h-64 border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center gap-4 hover:bg-accent/5 transition-colors"
             >
@@ -104,7 +146,7 @@ const GalleryUploader = ({ onClose }: GalleryUploaderProps) => {
               </div>
             </button>
           )}
-        </div>
+        </form>
       </div>
     </div>
   );
