@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import BlogEditor from '@/components/BlogEditor';
 import ThoughtEditor from '@/components/ThoughtEditor';
 import GalleryUploader from '@/components/GalleryUploader';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 const Dashboard = () => {
   const { posts, deletePost } = useBlog();
@@ -27,36 +28,55 @@ const Dashboard = () => {
   
   const [isGalleryUploaderOpen, setIsGalleryUploaderOpen] = useState(false);
 
-  const handleDeletePost = async (id: string, title: string) => {
-    if (window.confirm(`Delete "${title}"?`)) {
-      try {
-        await deletePost(id);
-        toast({ title: 'Post deleted', description: 'Blog post removed successfully.' });
-      } catch (error) {
-        toast({ title: 'Error', description: 'Failed to delete post.', variant: 'destructive' });
-      }
-    }
+  // Confirmation dialogs
+  const [deleteDialog, setDeleteDialog] = useState<{
+    open: boolean;
+    type: 'post' | 'thought' | 'image';
+    id: string;
+    title?: string;
+  }>({ open: false, type: 'post', id: '' });
+
+  const handleDeletePost = (id: string, title: string) => {
+    setDeleteDialog({ open: true, type: 'post', id, title });
   };
 
-  const handleDeleteThought = async (id: string) => {
-    if (window.confirm('Delete this thought?')) {
-      try {
-        await deleteThought(id);
-        toast({ title: 'Thought deleted', description: 'Thought removed successfully.' });
-      } catch (error) {
-        toast({ title: 'Error', description: 'Failed to delete thought.', variant: 'destructive' });
-      }
-    }
+  const handleDeleteThought = (id: string) => {
+    setDeleteDialog({ open: true, type: 'thought', id });
   };
 
-  const handleDeleteImage = async (id: string) => {
-    if (window.confirm('Delete this image?')) {
-      try {
-        await deleteImage(id);
-        toast({ title: 'Image deleted', description: 'Image removed from gallery.' });
-      } catch (error) {
-        toast({ title: 'Error', description: 'Failed to delete image.', variant: 'destructive' });
+  const handleDeleteImage = (id: string) => {
+    setDeleteDialog({ open: true, type: 'image', id });
+  };
+
+  const confirmDelete = async () => {
+    try {
+      if (deleteDialog.type === 'post') {
+        await deletePost(deleteDialog.id);
+        toast({ 
+          title: 'Post deleted', 
+          description: 'Blog post removed successfully.' 
+        });
+      } else if (deleteDialog.type === 'thought') {
+        await deleteThought(deleteDialog.id);
+        toast({ 
+          title: 'Thought deleted', 
+          description: 'Thought removed successfully.' 
+        });
+      } else if (deleteDialog.type === 'image') {
+        await deleteImage(deleteDialog.id);
+        toast({ 
+          title: 'Image deleted', 
+          description: 'Image removed from gallery.' 
+        });
       }
+    } catch (error) {
+      toast({ 
+        title: 'Error', 
+        description: `Failed to delete ${deleteDialog.type}.`, 
+        variant: 'destructive' 
+      });
+    } finally {
+      setDeleteDialog({ open: false, type: 'post', id: '' });
     }
   };
 
@@ -73,17 +93,18 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)]">
-      <section className="container mx-auto px-4 py-16 md:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-2">Dashboard</h1>
-            <p className="text-lg text-muted-foreground">Welcome back, {user?.name}!</p>
-          </div>
+    <>
+      <div className="min-h-[calc(100vh-4rem)]">
+        <section className="container mx-auto px-4 py-16 md:py-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold mb-2">Dashboard</h1>
+              <p className="text-lg text-muted-foreground">Welcome back, {user?.name}!</p>
+            </div>
 
           <Tabs defaultValue="thoughts" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
@@ -102,8 +123,9 @@ const Dashboard = () => {
               </div>
               
               {thoughts.length === 0 ? (
-                <div className="text-center py-12 bg-card border border-border rounded-lg">
-                  <p className="text-muted-foreground">No thoughts yet.</p>
+                <div className="text-center py-16 bg-card border border-border rounded-lg">
+                  <p className="text-muted-foreground mb-2">No thoughts yet.</p>
+                  <p className="text-sm text-muted-foreground">Create your first thought to get started.</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -139,8 +161,9 @@ const Dashboard = () => {
               </div>
               
               {posts.length === 0 ? (
-                <div className="text-center py-12 bg-card border border-border rounded-lg">
-                  <p className="text-muted-foreground">No blog posts yet.</p>
+                <div className="text-center py-16 bg-card border border-border rounded-lg">
+                  <p className="text-muted-foreground mb-2">No blog posts yet.</p>
+                  <p className="text-sm text-muted-foreground">Create your first post to get started.</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -177,8 +200,9 @@ const Dashboard = () => {
               </div>
               
               {images.length === 0 ? (
-                <div className="text-center py-12 bg-card border border-border rounded-lg">
-                  <p className="text-muted-foreground">No images yet.</p>
+                <div className="text-center py-16 bg-card border border-border rounded-lg">
+                  <p className="text-muted-foreground mb-2">No images yet.</p>
+                  <p className="text-sm text-muted-foreground">Upload your first image to get started.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -196,16 +220,31 @@ const Dashboard = () => {
               )}
             </TabsContent>
           </Tabs>
-        </motion.div>
-      </section>
+          </motion.div>
+        </section>
 
-      {isThoughtEditorOpen && (
-        <ThoughtEditor thoughtId={editingThoughtId || undefined} onClose={() => { setIsThoughtEditorOpen(false); setEditingThoughtId(null); }} />
-      )}
-      {isGalleryUploaderOpen && (
-        <GalleryUploader onClose={() => setIsGalleryUploaderOpen(false)} />
-      )}
-    </div>
+        {isThoughtEditorOpen && (
+          <ThoughtEditor thoughtId={editingThoughtId || undefined} onClose={() => { setIsThoughtEditorOpen(false); setEditingThoughtId(null); }} />
+        )}
+        {isGalleryUploaderOpen && (
+          <GalleryUploader onClose={() => setIsGalleryUploaderOpen(false)} />
+        )}
+      </div>
+
+      <ConfirmDialog
+        open={deleteDialog.open}
+        onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}
+        onConfirm={confirmDelete}
+        title={`Delete ${deleteDialog.type}?`}
+        description={
+          deleteDialog.type === 'post'
+            ? `Are you sure you want to delete "${deleteDialog.title}"? This action cannot be undone.`
+            : `Are you sure you want to delete this ${deleteDialog.type}? This action cannot be undone.`
+        }
+        confirmText="Delete"
+        variant="destructive"
+      />
+    </>
   );
 };
 
