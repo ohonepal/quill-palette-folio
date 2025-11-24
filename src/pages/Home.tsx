@@ -25,7 +25,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl"
           >
-            AHA Nepal Founder | Mindful & Efficient
+            Lifelong Learner | Mindful & Efficient
           </motion.p>
 
           <motion.p
@@ -34,8 +34,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-base md:text-lg text-muted-foreground mb-12 max-w-3xl"
           >
-            A journey through markets, mindfulness, and meaningful growth. 
-            I believe in discipline, focus, and the power of intentional living.
+            Passionate about discipline, mindfulness, and continuous growth. Every morning is a fresh start — where I plan, focus, and strive for excellence.
           </motion.p>
 
           <motion.div
@@ -75,7 +74,7 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">Discipline</h3>
               <p className="text-muted-foreground">
-                Consistent habits and routines that drive success in trading and life.
+                Consistent habits and routines that drive success in all areas of life.
               </p>
             </motion.div>
 
