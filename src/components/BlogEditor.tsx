@@ -18,6 +18,7 @@ const BlogEditor = ({ postId, onClose }: BlogEditorProps) => {
   const { addPost, updatePost, getPost } = useBlog();
   const { user } = useAuth();
   const { toast } = useToast();
+  const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
@@ -73,6 +74,8 @@ const BlogEditor = ({ postId, onClose }: BlogEditorProps) => {
 
     if (!validateForm()) return;
 
+    setIsSaving(true);
+
     try {
       if (postId) {
         await updatePost(postId, formData);
@@ -97,6 +100,8 @@ const BlogEditor = ({ postId, onClose }: BlogEditorProps) => {
         description: 'Failed to save post. Please try again.',
         variant: 'destructive',
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -170,11 +175,11 @@ const BlogEditor = ({ postId, onClose }: BlogEditorProps) => {
             </div>
 
             <div className="flex gap-4">
-              <Button type="submit" size="lg" className="flex-1">
+              <Button type="submit" size="lg" className="flex-1" disabled={isSaving}>
                 <Save className="mr-2 h-4 w-4" />
-                {postId ? 'Update Post' : 'Publish Post'}
+                {isSaving ? 'Saving...' : (postId ? 'Update Post' : 'Publish Post')}
               </Button>
-              <Button type="button" variant="outline" size="lg" onClick={onClose}>
+              <Button type="button" variant="outline" size="lg" onClick={onClose} disabled={isSaving}>
                 Cancel
               </Button>
             </div>

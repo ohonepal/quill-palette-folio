@@ -52,6 +52,20 @@ const About = () => {
                 </p>
               </div>
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-12 pt-8 border-t border-border"
+            >
+              <Button size="lg" className="group" asChild>
+                <a href="/resume.pdf" download>
+                  <Download className="mr-2 h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+                  Download Resume
+                </a>
+              </Button>
+            </motion.div>
           </div>
         </motion.div>
       </section>

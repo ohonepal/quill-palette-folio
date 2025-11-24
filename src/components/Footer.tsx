@@ -6,17 +6,20 @@ const Footer = () => {
   return (
     <footer className="bg-secondary/30 border-t border-border mt-auto">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            © {currentYear} Khum Bahadur Katuwal. Built with mindfulness.
-          </p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <p className="text-sm font-medium mb-1">Khum Bahadur Katuwal</p>
+            <p className="text-xs text-muted-foreground">
+              © {currentYear} All rights reserved
+            </p>
+          </div>
           
           <div className="flex items-center gap-4">
             <a
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center text-muted-foreground hover:text-primary transition-all"
               aria-label="LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
@@ -25,7 +28,7 @@ const Footer = () => {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center text-muted-foreground hover:text-primary transition-all"
               aria-label="X / Twitter"
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -34,7 +37,7 @@ const Footer = () => {
             </a>
             <a
               href="mailto:khum@example.com"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center text-muted-foreground hover:text-primary transition-all"
               aria-label="Email"
             >
               <Mail className="h-5 w-5" />
