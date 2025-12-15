@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 215 20% 25%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 20% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 20% 25%;
+
+    --primary: 210 50% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 215 20% 25%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 15% 50%;
+
+    --accent: 200 45% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 20% 92%;
+    --input: 215 20% 92%;
+    --ring: 210 50% 60%;
+
+    --radius: 0.5rem;
+    
+    /* Calm, serene colors for Khum's site */
+    --hero-gradient-from: 210 50% 60%;
+    --hero-gradient-to: 200 45% 65%;
+    --section-bg: 210 40% 98%;
+    --card-hover: 210 50% 60%;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 25% 12%;
+    --foreground: 210 40% 98%;
+
+    --card: 215 23% 15%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 215 23% 15%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 50% 65%;
+    --primary-foreground: 215 25% 12%;
+
+    --secondary: 215 20% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 215 20% 20%;
+    --muted-foreground: 215 15% 70%;
+
+    --accent: 200 45% 60%;
+    --accent-foreground: 215 25% 12%;
+
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 20% 22%;
+    --input: 215 20% 22%;
+    --ring: 210 50% 65%;
+    
+    /* Calm colors for dark mode */
+    --hero-gradient-from: 210 50% 65%;
+    --hero-gradient-to: 200 45% 70%;
+    --section-bg: 215 23% 17%;
+    --card-hover: 210 50% 65%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* React Quill dark mode styles */
+  .dark .ql-toolbar {
+    @apply bg-card border-border;
+  }
+
+  .dark .ql-container {
+    @apply bg-card border-border;
+  }
+
+  .dark .ql-editor {
+    @apply text-foreground;
+  }
+
+  .dark .ql-stroke {
+    @apply stroke-foreground;
+  }
+
+  .dark .ql-fill {
+    @apply fill-foreground;
+  }
+
+  .dark .ql-picker-label {
+    @apply text-foreground;
+  }
+}
