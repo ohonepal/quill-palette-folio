@@ -1,10 +1,14 @@
 import { apiClient } from '@/api/client';
 import { API_ENDPOINTS, STORAGE_KEYS } from '@/config/constants';
 
+
 export interface User {
-  id: string;
+  uuid: string;
   email: string;
-  name: string;
+  username: string;
+  first_name?: string;
+  last_name?: string;
+  role: 'admin' | 'user';
 }
 
 export interface LoginCredentials {
@@ -14,8 +18,8 @@ export interface LoginCredentials {
 
 export interface AuthResponse {
   user: User;
-  token: string;
-  refreshToken?: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export const authService = {
@@ -27,10 +31,8 @@ export const authService = {
     );
 
     // Store tokens
-    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, response.token);
-    if (response.refreshToken) {
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.refreshToken);
-    }
+    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.accessToken);
+    localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.refreshToken);
 
     return response;
   },
@@ -40,7 +42,7 @@ export const authService = {
       await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT);
     } finally {
       // Clear tokens regardless of API response
-      localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
       localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
     }
   },
@@ -61,11 +63,11 @@ export const authService = {
       { requiresAuth: false }
     );
 
-    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, response.token);
+    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.token);
     return response.token;
   },
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    return !!localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
   },
 };
